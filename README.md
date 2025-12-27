@@ -1,0 +1,1 @@
+# pokeMMO-AFK-manager
