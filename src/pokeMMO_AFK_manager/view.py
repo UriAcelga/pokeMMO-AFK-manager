@@ -64,3 +64,22 @@ class AppView(tk.Tk):
 
     def run(self):
         self.mainloop()
+
+    def window_not_found_popup(self, windowName):
+        popup = tk.Toplevel(self)
+        popup.title("Aviso")
+        popup.geometry("300x150")
+        popup.grid_columnconfigure(0, weight=1)
+
+        popup.transient(self)        
+        
+        label = tk.Label(popup, text=f"Ventana {windowName} no encontrada. Inicia la aplicación para continuar.",
+                         wraplength=270, justify="center")
+        label.grid(row=0, column=0, padx=15)
+
+        btn_close = ttk.Button(popup, text="Cerrar", style="Action.TButton",
+                               command=popup.destroy, width=20,)
+        btn_close.grid(row=1, column=0, padx=15)
+
+        popup.grab_set()
+        self.wait_window(popup)

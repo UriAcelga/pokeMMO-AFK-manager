@@ -10,6 +10,8 @@ class AppController:
         self.scmodel = ScreenCaptureModel()
         self.cv2model = ImgProcessingModel()
         self.windowmodel = WindowModel()
+
+        self.targetWindow = "PokeMMO"
         self.coords = None #Coordenadas de la ventana del juego
         
         self.view.btn_accion.configure(command=self.ejecutar_matching)
@@ -26,5 +28,8 @@ class AppController:
 
     def activar_ventana(self):
         self.windowmodel.print_window_list()
-        self.coords = self.windowmodel.enfocar_ventana("PokeMMO") #TODO abstraer constante de nombre
+        try:
+            self.coords = self.windowmodel.enfocar_ventana(self.targetWindow)
+        except ValueError:
+            self.view.window_not_found_popup(self.targetWindow)
         print(self.coords)
