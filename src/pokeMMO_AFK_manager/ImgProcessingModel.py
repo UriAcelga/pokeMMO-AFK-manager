@@ -19,7 +19,7 @@ class ImgProcessingModel:
                             Por defecto es 0.8.
 
         Returns:
-            Optional[Tuple[int, int]]: Coordenadas (x, y) del centro del mejor acierto encontrado.
+            Optional[List[int, int]]: Coordenadas [x, y] del centro del mejor acierto encontrado.
                                     Retorna None si no se supera el umbral de confianza o si no se encuentra la plantilla especificada.
         """
         img_np = np.array(screenshot)
@@ -33,25 +33,28 @@ class ImgProcessingModel:
         template_hsv = cv2.cvtColor(template, cv2.COLOR_BGR2HSV)
 
         
+        puntos = []
         for i, method in enumerate(self.methods, start=1):
+            img_cpy = img_rgb.copy()
             result = cv2.matchTemplate(img_hsv, template_hsv, method)
 
             # dibujar resultado para visualización
-            matching_points = []
             if method == cv2.TM_SQDIFF_NORMED:
                 loc = np.where(result <= 0.05)
             elif method == cv2.TM_CCORR_NORMED:
                 loc = np.where(result >= 0.98)
             else:
                 loc = np.where(result >= threshold)
-            for pt in zip(*loc[::-1]):
-                matching_points.append(pt)
+            puntos.append(zip(*loc[::-1]))
+            
+            for pt in puntos:
                 cv2.rectangle(
-                    img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
-
+                    img_cpy, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
+            
             res_path = get_public_path('res' + str(i) + '.png')
-            cv2.imwrite(res_path, img_rgb)
-            print(matching_points)
+            cv2.imwrite(res_path, img_cpy)
+        return puntos[0]
+        
         
 
     def find_template_from_img(self, img_path, template_path, threshold=0.8):

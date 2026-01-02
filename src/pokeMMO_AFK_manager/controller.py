@@ -21,15 +21,17 @@ class AppController:
     def ejecutar_matching(self):
         screenshot = self.scmodel.capturar(self.coords)
         rutaTemplate = get_template_path("held_item.png")
-        #rutaImg = get_public_path("pokemmo.png")
-        #self.cv2model.find_template_from_img(rutaImg, rutaTemplate)
-        #rutaTemplate = get_template_path("template_ejemplo.png")
         self.cv2model.find_template(screenshot, rutaTemplate)
 
     def activar_ventana(self):
+        """
+        Activa y pone foco en la ventana. Se registran las coordenadas de la misma.
+        
+        Returns:
+            {"left": x, "top": y, "width": a, "height": b}
+        """
         self.windowmodel.print_window_list()
         try:
             self.coords = self.windowmodel.enfocar_ventana(self.targetWindow)
         except ValueError:
             self.view.window_not_found_popup(self.targetWindow)
-        print(self.coords)
