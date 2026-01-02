@@ -15,7 +15,8 @@ dependencies = [
     "opencv-python",
     "mss",
     "pillow",
-    "pathlib2"
+    "pathlib2",
+    "PyAutoGUI",
 ]
 
 [project.optional-dependencies]

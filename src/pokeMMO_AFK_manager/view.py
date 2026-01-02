@@ -50,11 +50,14 @@ class AppView(tk.Tk):
         controls_frame.grid(row=1, column=0, pady=40)
         controls_frame.columnconfigure(0, weight=1)
 
+        self.btn_window = ttk.Button(controls_frame, text="Encontrar Ventana", style="Action.TButton", command=self.on_button_click, width=40)
+        self.btn_window.grid(row=0, column=0, pady=15)
+        
         self.btn_accion = ttk.Button(controls_frame, text="Iniciar Script", style="Action.TButton", command=self.on_button_click, width=40)
-        self.btn_accion.grid(row=0, column=0, pady=15)
+        self.btn_accion.grid(row=1, column=0, pady=15)
         
         self.btn_salir = ttk.Button(controls_frame, text="Configuración", style="Action.TButton", command=self.on_button_click, width=40)
-        self.btn_salir.grid(row=1, column=0, pady=15)
+        self.btn_salir.grid(row=2, column=0, pady=15)
 
     def on_button_click(self):
         print("Evento capturado: Botón presionado")
